@@ -3,6 +3,7 @@ package com.task;
 public class Warrior {
     private static final int ATTACK = 5;
     private int health;
+    private Warrior warriorBehind;
 
     public Warrior() {
         this(50);
@@ -28,12 +29,24 @@ public class Warrior {
         this.health = health;
     }
 
+    public void setWarriorBehind(Warrior warriorBehind) {
+        this.warriorBehind = warriorBehind;
+    }
+
     public void hits(Warrior enemy) {
         enemy.getHitBy(this);
     }
 
-    public int getHitBy(Warrior enemy) {    // returns damage
+    public void getHitBy(Warrior enemy) {    // returns damage
         this.health -= enemy.getAttack();    // this ? setHealth
-        return enemy.getAttack();
+//        return enemy.getAttack();
+    }
+
+    public Warrior getWarriorBehind() {
+        if (warriorBehind != null) {
+            return warriorBehind;
+        } else {
+            return null;
+        }
     }
 }

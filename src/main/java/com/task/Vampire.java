@@ -19,7 +19,9 @@ public class Vampire extends Warrior{
 
     @Override
     public void hits(Warrior enemy) {
-        int damage = enemy.getHitBy(this);
+        int healthBefore = enemy.getHealth();
+        super.hits(enemy);
+        int damage = healthBefore - enemy.getHealth();
         setHealth(getHealth() + damage * getVampirism() / 100);
     }
 }

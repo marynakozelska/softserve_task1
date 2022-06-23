@@ -18,8 +18,8 @@ public class Defender extends Warrior {
     }
 
     @Override
-    public int getHitBy(Warrior enemy) {
+    public void getHitBy(Warrior enemy) {
         setHealth(getHealth() - Math.max(0, enemy.getAttack() - getDefense()));
-        return enemy.getAttack() - getDefense();
+//        return enemy.getAttack() - getDefense();
     }
 }
