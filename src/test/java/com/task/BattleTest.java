@@ -470,4 +470,273 @@ class ArmyTest {
 
         assert !Battle.fight(army_warrior, army_lancer);
     }
+
+    @Test
+    @DisplayName("Moodle: Army 5 with Healers")
+    void testArmyMoodle5() {
+        var chuck = new Warrior();
+        var bruce = new Warrior();
+        var carl = new Knight();
+        var dave = new Warrior();
+        var mark = new Warrior();
+        var bob = new Defender();
+        var mike = new Knight();
+        var rog = new Warrior();
+        var lancelot = new Defender();
+        var eric = new Vampire();
+        var adam = new Vampire();
+        var richard = new Defender();
+        var ogre = new Warrior();
+        var freelancer = new Lancer();
+        var vampire = new Vampire();
+        var priest = new Healer();
+
+        assert Battle.fight(chuck, bruce) == true;
+        assert Battle.fight(dave, carl) == false;
+        assert chuck.isAlive() == true;
+        assert bruce.isAlive() == false;
+        assert carl.isAlive() == true;
+        assert dave.isAlive() == false;
+        assert Battle.fight(carl, mark) == false;
+        assert carl.isAlive() == false;
+        assert Battle.fight(bob, mike) == false;
+        assert Battle.fight(lancelot, rog) == true;
+        assert Battle.fight(eric, richard) == false;
+        assert Battle.fight(ogre, adam) == true;
+        assert Battle.fight(freelancer, vampire) == true;
+        assert freelancer.isAlive() == true;
+        assert freelancer.getHealth() == 14;
+        priest.heal(freelancer);
+        assert freelancer.getHealth() == 16;
+
+        var my_army = new Army();
+        my_army.addUnits(Defender::new, 2);
+        my_army.addUnits(Healer::new, 1);
+        my_army.addUnits(Vampire::new, 2);
+        my_army.addUnits(Lancer::new, 2);
+        my_army.addUnits(Healer::new, 1);
+        my_army.addUnits(Warrior::new, 1);
+
+        var enemy_army = new Army();
+        enemy_army.addUnits(Warrior::new, 2);
+        enemy_army.addUnits(Lancer::new, 4);
+        enemy_army.addUnits(Healer::new, 1);
+        enemy_army.addUnits(Defender::new, 2);
+        enemy_army.addUnits(Vampire::new, 3);
+        enemy_army.addUnits(Healer::new, 1);
+
+        var army_3 = new Army();
+        army_3.addUnits(Warrior::new, 1);
+        army_3.addUnits(Lancer::new, 1);
+        army_3.addUnits(Healer::new, 1);
+        army_3.addUnits(Defender::new, 2);
+
+        var army_4 = new Army();
+        army_4.addUnits(Vampire::new, 3);
+        army_4.addUnits(Warrior::new, 1);
+        army_4.addUnits(Healer::new, 1);
+        army_4.addUnits(Lancer::new, 2);
+
+        assert Battle.fight(my_army, enemy_army) == false;
+        assert Battle.fight(army_3, army_4) == true;
+    }
+
+    @Test
+    @DisplayName("18: Army")
+    void testArmy18() {
+        var army_1 = new Army();
+        var army_2 = new Army();
+
+        army_1.addUnits(Lancer::new, 7);
+        army_1.addUnits(Vampire::new, 3);
+        army_1.addUnits(Healer::new, 1);
+        army_1.addUnits(Warrior::new, 4);
+        army_1.addUnits(Healer::new, 1);
+        army_1.addUnits(Defender::new, 2);
+        army_2.addUnits(Warrior::new, 4);
+        army_2.addUnits(Defender::new, 4);
+        army_2.addUnits(Healer::new, 1);
+        army_2.addUnits(Vampire::new, 6);
+        army_2.addUnits(Lancer::new, 4);
+
+        assert Battle.fight(army_1, army_2);
+    }
+
+    @Test
+    @DisplayName("18_1: Army")
+    void testArmy18_1() {
+        var army_1 = new Army();
+        var army_2 = new Army();
+
+        army_1.addUnits(Lancer::new, 1);
+        army_1.addUnits(Warrior::new, 3);
+        army_1.addUnits(Healer::new, 1);
+        army_1.addUnits(Warrior::new, 4);
+        army_1.addUnits(Healer::new, 1);
+        army_1.addUnits(Knight::new, 2);
+        army_2.addUnits(Warrior::new, 4);
+        army_2.addUnits(Defender::new, 4);
+        army_2.addUnits(Healer::new, 1);
+        army_2.addUnits(Vampire::new, 6);
+        army_2.addUnits(Lancer::new, 4);
+
+        assert !Battle.fight(army_1, army_2);
+    }
+
+    @Test
+    @DisplayName("Moodle: Army 6 straight fight")
+    void testArmyMoodle6() {
+        var chuck = new Warrior();
+        var bruce = new Warrior();
+        var carl = new Knight();
+        var dave = new Warrior();
+        var mark = new Warrior();
+        var bob = new Defender();
+        var mike = new Knight();
+        var rog = new Warrior();
+        var lancelot = new Defender();
+        var eric = new Vampire();
+        var adam = new Vampire();
+        var richard = new Defender();
+        var ogre = new Warrior();
+        var freelancer = new Lancer();
+        var vampire = new Vampire();
+        var priest = new Healer();
+
+        assert Battle.fight(chuck, bruce) == true;
+        assert Battle.fight(dave, carl) == false;
+        assert chuck.isAlive() == true;
+        assert bruce.isAlive() == false;
+        assert carl.isAlive() == true;
+        assert dave.isAlive() == false;
+        assert Battle.fight(carl, mark) == false;
+        assert carl.isAlive() == false;
+        assert Battle.fight(bob, mike) == false;
+        assert Battle.fight(lancelot, rog) == true;
+        assert Battle.fight(eric, richard) == false;
+        assert Battle.fight(ogre, adam) == true;
+        assert Battle.fight(freelancer, vampire) == true;
+        assert freelancer.isAlive() == true;
+        assert freelancer.getHealth() == 14;
+        priest.heal(freelancer);
+        assert freelancer.getHealth() == 16;
+
+        var myArmy = new Army();
+        myArmy.addUnits(Defender::new, 2);
+        myArmy.addUnits(Healer::new, 1);
+        myArmy.addUnits(Vampire::new, 2);
+        myArmy.addUnits(Lancer::new, 2);
+        myArmy.addUnits(Healer::new, 1);
+        myArmy.addUnits(Warrior::new, 1);
+
+        var enemyArmy = new Army();
+        enemyArmy.addUnits(Warrior::new, 2);
+        enemyArmy.addUnits(Lancer::new, 4);
+        enemyArmy.addUnits(Healer::new, 1);
+        enemyArmy.addUnits(Defender::new, 2);
+        enemyArmy.addUnits(Vampire::new, 3);
+        enemyArmy.addUnits(Healer::new, 1);
+
+        var army3 = new Army();
+        army3.addUnits(Warrior::new, 1);
+        army3.addUnits(Lancer::new, 1);
+        army3.addUnits(Healer::new, 1);
+        army3.addUnits(Defender::new, 2);
+
+        var army4 = new Army();
+        army4.addUnits(Vampire::new, 3);
+        army4.addUnits(Warrior::new, 1);
+        army4.addUnits(Healer::new, 1);
+        army4.addUnits(Lancer::new, 2);
+
+        var army5 = new Army();
+        army5.addUnits(Warrior::new, 10);
+
+        var army6 = new Army();
+        army6.addUnits(Warrior::new, 6);
+        army6.addUnits(Lancer::new, 5);
+
+        assert Battle.fight(myArmy, enemyArmy) == false;
+        assert Battle.fight(army3, army4) == true;
+        assert Battle.straightFight(army5, army6) == false;
+    }
+
+    @Test
+    @DisplayName("19: Army")
+    void testArmy19() {
+        var army_1 = new Army();
+        var army_2 = new Army();
+
+        army_1.addUnits(Lancer::new, 5);
+        army_1.addUnits(Vampire::new, 3);
+        army_1.addUnits(Warrior::new, 4);
+        army_1.addUnits(Defender::new, 2);
+        army_2.addUnits(Warrior::new, 4);
+        army_2.addUnits(Defender::new, 4);
+        army_2.addUnits(Vampire::new, 6);
+        army_2.addUnits(Lancer::new, 5);
+
+        assert !Battle.straightFight(army_1, army_2);
+    }
+
+    @Test
+    @DisplayName("20: Army")
+    void testArmy20() {
+        var army_1 = new Army();
+        var army_2 = new Army();
+
+        army_1.addUnits(Lancer::new, 7);
+        army_1.addUnits(Vampire::new, 3);
+        army_1.addUnits(Warrior::new, 4);
+        army_1.addUnits(Defender::new, 2);
+        army_2.addUnits(Warrior::new, 4);
+        army_2.addUnits(Defender::new, 4);
+        army_2.addUnits(Vampire::new, 6);
+        army_2.addUnits(Lancer::new, 4);
+
+        assert Battle.straightFight(army_1, army_2);
+    }
+
+    @Test
+    @DisplayName("21: Army")
+    void testArmy21() {
+        var army_1 = new Army();
+        var army_2 = new Army();
+
+        army_1.addUnits(Lancer::new, 7);
+        army_1.addUnits(Vampire::new, 3);
+        army_1.addUnits(Healer::new, 1);
+        army_1.addUnits(Warrior::new, 4);
+        army_1.addUnits(Healer::new, 1);
+        army_1.addUnits(Defender::new, 2);
+        army_2.addUnits(Warrior::new, 4);
+        army_2.addUnits(Defender::new, 4);
+        army_2.addUnits(Healer::new, 1);
+        army_2.addUnits(Vampire::new, 6);
+        army_2.addUnits(Lancer::new, 4);
+
+        assert !Battle.straightFight(army_1, army_2);
+    }
+
+    @Test
+    @DisplayName("22: Army")
+    void testArmy22() {
+        var army_1 = new Army();
+        var army_2 = new Army();
+
+        army_1.addUnits(Lancer::new, 4);
+        army_1.addUnits(Warrior::new, 3);
+        army_1.addUnits(Healer::new, 1);
+        army_1.addUnits(Warrior::new, 4);
+        army_1.addUnits(Healer::new, 1);
+        army_1.addUnits(Knight::new, 2);
+        army_2.addUnits(Warrior::new, 4);
+        army_2.addUnits(Defender::new, 4);
+        army_2.addUnits(Healer::new, 1);
+        army_2.addUnits(Vampire::new, 2);
+        army_2.addUnits(Lancer::new, 4);
+
+        assert Battle.straightFight(army_1, army_2);
+    }
+
 }

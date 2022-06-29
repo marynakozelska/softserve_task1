@@ -1,6 +1,6 @@
 package com.task;
 
-public class Defender extends Warrior {
+public class Defender extends Warrior implements canAttack{
     private static final int ATTACK = 3;
     private static final int DEFENSE = 2;
 
@@ -20,6 +20,10 @@ public class Defender extends Warrior {
     @Override
     public void getHitBy(Warrior enemy) {
         setHealth(getHealth() - Math.max(0, enemy.getAttack() - getDefense()));
-//        return enemy.getAttack() - getDefense();
+
+        if (getWarriorBehind() instanceof Healer) {
+            Healer healer = (Healer) getWarriorBehind();
+            healer.heal(this);
+        }
     }
 }

@@ -1,8 +1,9 @@
 package com.task;
 
-public class Warrior {
+public class Warrior implements canAttack {
     private static final int ATTACK = 5;
     private int health;
+    private final int initialHealth;
     private Warrior warriorBehind;
 
     public Warrior() {
@@ -10,6 +11,7 @@ public class Warrior {
     }
 
     protected Warrior(int health) {
+        this.initialHealth = health;
         this.health = health;
     }
 
@@ -19,6 +21,10 @@ public class Warrior {
 
     public int getHealth() {
         return health;
+    }
+
+    public int getInitialHealth() {
+        return initialHealth;
     }
 
     public boolean isAlive() {
@@ -37,9 +43,12 @@ public class Warrior {
         enemy.getHitBy(this);
     }
 
-    public void getHitBy(Warrior enemy) {    // returns damage
-        this.health -= enemy.getAttack();    // this ? setHealth
-//        return enemy.getAttack();
+    public void getHitBy(Warrior enemy) {
+        this.health -= enemy.getAttack();
+        if (warriorBehind instanceof Healer) {
+            Healer healer = (Healer) warriorBehind;
+            healer.heal(this);
+        }
     }
 
     public Warrior getWarriorBehind() {

@@ -1,6 +1,6 @@
 package com.task;
 
-public class Lancer extends Warrior {
+public class Lancer extends Warrior implements canAttack {
     private static final int ATTACK = 6;
     private static final int LANCER_POWER = 50;
 
@@ -23,5 +23,4 @@ public class Lancer extends Warrior {
             warriorBehind.setHealth(warriorBehind.getHealth() - damageForFirstEnemy * LANCER_POWER / 100);
         }
     }
-
 }

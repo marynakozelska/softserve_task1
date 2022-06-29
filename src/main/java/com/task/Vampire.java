@@ -1,6 +1,6 @@
 package com.task;
 
-public class Vampire extends Warrior{
+public class Vampire extends Warrior implements canAttack {
     private static final int ATTACK = 4;
     private static final int VAMPIRISM = 50;
 
