@@ -1,29 +1,43 @@
 package com.task;
 
-public class Defender extends Warrior implements canAttack{
-    private static final int ATTACK = 3;
-    private static final int DEFENSE = 2;
+public class Defender extends Warrior implements CanAttack {
+    private static final int ATTACK_DEFAULT = 3;
+    private static final int DEFENSE_DEFAULT = 2;
+    protected int gainedDefense = DEFENSE_DEFAULT;
 
     public Defender() {
-        super(60);
+        super(60, ATTACK_DEFAULT);
+        setDefense(DEFENSE_DEFAULT);
     }
 
-    @Override
-    public int getAttack() {
-        return ATTACK;
+    public Defender(int health, int attack, int gainedDefense) {
+        super(health);
+        setAttack(attack);
+        setDefense(gainedDefense);
     }
 
     public int getDefense() {
-        return DEFENSE;
+        return gainedDefense;
+    }
+
+    public void setDefense(int defense) {
+        this.gainedDefense = defense;
     }
 
     @Override
     public void getHitBy(Warrior enemy) {
-        setHealth(getHealth() - Math.max(0, enemy.getAttack() - getDefense()));
+        if (enemy.getAttack() != 0) setHealth(Math.max(0, getHealth() - enemy.getAttack() + getDefense()));
 
-        if (getWarriorBehind() instanceof Healer) {
+        if (getWarriorBehind() instanceof Healer && this.getHealth() != 0) {
             Healer healer = (Healer) getWarriorBehind();
             healer.heal(this);
         }
+    }
+
+    @Override
+    public void equipWeapon(Weapon weapon) {
+        setHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setAttack(getAttack() + weapon.getAttack());
+        setDefense(Math.max(0, getDefense() + weapon.getDefense()));
     }
 }

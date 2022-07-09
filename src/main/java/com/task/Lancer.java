@@ -1,16 +1,11 @@
 package com.task;
 
-public class Lancer extends Warrior implements canAttack {
-    private static final int ATTACK = 6;
+public class Lancer extends Warrior implements CanAttack {
+    private static final int ATTACK_DEFAULT = 6;
     private static final int LANCER_POWER = 50;
 
     public Lancer() {
-        super(50);
-    }
-
-    @Override
-    public int getAttack() {
-        return ATTACK;
+        super(50, ATTACK_DEFAULT);
     }
 
     @Override
@@ -20,7 +15,13 @@ public class Lancer extends Warrior implements canAttack {
         int damageForFirstEnemy = healthBefore - enemy.getHealth();
         Warrior warriorBehind = enemy.getWarriorBehind();
         if (warriorBehind != null) {
-            warriorBehind.setHealth(warriorBehind.getHealth() - damageForFirstEnemy * LANCER_POWER / 100);
+            warriorBehind.setHealth(Math.max(0, warriorBehind.getHealth() - damageForFirstEnemy * LANCER_POWER / 100));
         }
+    }
+
+    @Override
+    public void equipWeapon(Weapon weapon) {
+        setHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        this.gainedAttack += weapon.getAttack();
     }
 }

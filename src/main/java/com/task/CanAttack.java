@@ -1,6 +1,6 @@
 package com.task;
 
 @FunctionalInterface
-public interface canAttack {
+public interface CanAttack {
     int getAttack();
 }

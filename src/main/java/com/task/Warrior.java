@@ -1,9 +1,10 @@
 package com.task;
 
-public class Warrior implements canAttack {
-    private static final int ATTACK = 5;
-    private int health;
-    private final int initialHealth;
+public class Warrior implements CanAttack {
+    private static final int ATTACK_DEFAULT = 5;
+    protected int gainedAttack = ATTACK_DEFAULT;
+    private int gainedHealth;
+    private int maxHealth;
     private Warrior warriorBehind;
 
     public Warrior() {
@@ -11,28 +12,41 @@ public class Warrior implements canAttack {
     }
 
     protected Warrior(int health) {
-        this.initialHealth = health;
-        this.health = health;
+        this.maxHealth = health;
+        this.gainedHealth = health;
+    }
+
+    public Warrior(int health, int gainedAttack) {
+        this(health);
+        this.gainedAttack = gainedAttack;
     }
 
     public int getAttack() {
-        return ATTACK;
+        return gainedAttack;
     }
 
     public int getHealth() {
-        return health;
+        return gainedHealth;
     }
 
-    public int getInitialHealth() {
-        return initialHealth;
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setAttack(int gainedAttack) {
+        this.gainedAttack = gainedAttack;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     public boolean isAlive() {
-        return health > 0;
+        return gainedHealth > 0;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void setHealth(int gainedHealth) {
+        this.gainedHealth = gainedHealth;
     }
 
     public void setWarriorBehind(Warrior warriorBehind) {
@@ -44,8 +58,8 @@ public class Warrior implements canAttack {
     }
 
     public void getHitBy(Warrior enemy) {
-        this.health -= enemy.getAttack();
-        if (warriorBehind instanceof Healer) {
+        this.gainedHealth = Math.max(0, this.gainedHealth - enemy.getAttack());
+        if (warriorBehind instanceof Healer && this.gainedHealth != 0) {
             Healer healer = (Healer) warriorBehind;
             healer.heal(this);
         }
@@ -57,5 +71,11 @@ public class Warrior implements canAttack {
         } else {
             return null;
         }
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        this.gainedHealth = Math.max(0, this.gainedHealth + weapon.getHealth());
+        maxHealth = getHealth();
+        this.gainedAttack += weapon.getAttack();
     }
 }
