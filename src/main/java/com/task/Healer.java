@@ -17,8 +17,7 @@ public class Healer extends Warrior implements CanAttack {
     public void heal(Warrior warriorInTheFront) {
         if (warriorInTheFront.getHealth() > 0) {
             warriorInTheFront.setHealth(
-                    Math.min(
-                            warriorInTheFront.getMaxHealth(),
+                    Math.min(warriorInTheFront.getMaxHealth(),
                             warriorInTheFront.getHealth() + gainedHealingPower
                     )
             );
@@ -27,7 +26,14 @@ public class Healer extends Warrior implements CanAttack {
 
     @Override
     public void equipWeapon(Weapon weapon) {
-        setHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setMaxHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setHealth(getMaxHealth());
         this.gainedHealingPower += weapon.getHealPower();
+    }
+
+    @Override
+    public void process(Warrior warrior, Warrior previousWarrior) {
+        if (previousWarrior != null) this.heal(previousWarrior);
+        super.process(warrior, previousWarrior);
     }
 }

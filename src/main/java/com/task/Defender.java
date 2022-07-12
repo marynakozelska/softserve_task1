@@ -25,18 +25,19 @@ public class Defender extends Warrior implements CanAttack {
     }
 
     @Override
-    public void getHitBy(Warrior enemy) {
-        if (enemy.getAttack() != 0) setHealth(Math.max(0, getHealth() - enemy.getAttack() + getDefense()));
-
-        if (getWarriorBehind() instanceof Healer && this.getHealth() != 0) {
-            Healer healer = (Healer) getWarriorBehind();
-            healer.heal(this);
-        }
+    public void getHitBy(CanAttack enemy) {
+        int dealtDamage =
+                Math.max(
+                        0,
+                        enemy.getAttack() - getDefense()
+                );
+        setHealth(Math.max(0, getHealth() - dealtDamage));
     }
 
     @Override
     public void equipWeapon(Weapon weapon) {
-        setHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setMaxHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setHealth(getMaxHealth());
         setAttack(getAttack() + weapon.getAttack());
         setDefense(Math.max(0, getDefense() + weapon.getDefense()));
     }

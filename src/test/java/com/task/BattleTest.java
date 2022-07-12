@@ -1,5 +1,6 @@
 package com.task;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,21 +24,87 @@ class BattleTest {
     }
 
     @Test
-    @DisplayName("2: Fight")
-    void testBattle2() {
+    @DisplayName("1: Fight")
+    void testFight1() {
         var carl = new Warrior();
         var jim = new Knight();
         assert !Battle.fight(carl, jim);
     }
 
     @Test
-    @DisplayName("3: Fight")
-    void testBattle3() {
+    @DisplayName("2: Fight")
+    void testFight2() {
         var ramon = new Knight();
         var slevin = new Warrior();
         assert Battle.fight(ramon, slevin);
         assert ramon.isAlive();
     }
+
+    @Test
+    @DisplayName("3: Fight")
+    void testFight3() {
+        var bob = new Warrior();
+        var mars = new Warrior();
+        assert Battle.fight(bob, mars);
+        assert bob.isAlive();
+    }
+
+    @Test
+    @DisplayName("4: Fight")
+    void testFight4() {
+        var zeus = new Knight();
+        var godkiller = new Warrior();
+        assert Battle.fight(zeus, godkiller);
+        assert zeus.isAlive();
+    }
+
+    @Test
+    @DisplayName("5: Fight")
+    void testFight5() {
+        var husband = new Warrior();
+        var wife = new Warrior();
+        Battle.fight(husband, wife);
+        assert !wife.isAlive();
+    }
+
+    @Test
+    @DisplayName("6: Fight")
+    void testFight6() {
+        var dragon = new Warrior();
+        var knight = new Knight();
+        Battle.fight(dragon, knight);
+        assert knight.isAlive();
+    }
+
+    @Test
+    @DisplayName("7: Fight")
+    void testFight7() {
+        var unit1 = new Warrior();
+        var unit2 = new Knight();
+        var unit3 = new Warrior();
+        Battle.fight(unit1, unit2);
+        assert !Battle.fight(unit2, unit3);
+    }
+
+    @Test
+    @DisplayName("8: Fight")
+    void testFight8() {
+        var unit1 = new Defender();
+        var unit2 = new Rookie();
+        Battle.fight(unit1, unit2);
+        assert unit1.getHealth() == 60;
+    }
+
+    @Test
+    @DisplayName("9: Fight")
+    void testFight9() {
+        var unit1 = new Defender();
+        var unit2 = new Rookie();
+        var unit3 = new Warrior();
+        Battle.fight(unit1, unit2);
+        assert Battle.fight(unit1, unit3);
+    }
+
 }
 
 class ArmyTest {
@@ -952,15 +1019,15 @@ class WeaponTest {
         var weapon1 = Weapon.builder()
                 .health(-20)
                 .attack(6)
-                .vampirism(1)
-                .defense(40)
+                .defense(1)
+                .vampirism(40)
                 .healPower(-2)
                 .build();
         var weapon2 = Weapon.builder()
                 .health(20)
                 .attack(-2)
-                .vampirism(2)
-                .defense(-55)
+                .defense(2)
+                .vampirism(-55)
                 .healPower(3)
                 .build();
 
@@ -988,15 +1055,15 @@ class WeaponTest {
         var weapon1 = Weapon.builder()
                 .health(-20)
                 .attack(1)
-                .vampirism(1)
-                .defense(40)
+                .defense(1)
+                .vampirism(40)
                 .healPower(-2)
                 .build();
         var weapon2 = Weapon.builder()
                 .health(20)
                 .attack(2)
-                .vampirism(2)
-                .defense(-55)
+                .defense(2)
+                .vampirism(-55)
                 .healPower(3)
                 .build();
 
@@ -1248,5 +1315,176 @@ class WarlordTest {
         army2.moveUnits();
 
         assert !Battle.straightFight(army1, army2);
+    }
+}
+
+class WitchTest {
+    @Test
+    @DisplayName("1: Witch Test")
+    void testWitch1() {
+        var army1 = new Army();
+        var army2 = new Army();
+
+        army1.addUnits(Witch::new, 1);
+        army2.addUnits(Warrior::new, 1);
+        army2.addUnits(Warrior::new, 1);
+        army2.addUnits(Warrior::new, 1);
+
+        assert !Battle.straightFight(army1, army2);
+    }
+
+    @Test
+    @DisplayName("2: Witch Test")
+    void testWitch2() {
+        var witch = new Witch();
+        var vampire = new Vampire();
+
+        assert Battle.fight(witch, vampire);
+    }
+
+    @Test
+    @DisplayName("3: Witch Test")
+    void testWitch3() {
+        var armyWitches = new Army();
+        var armyVampires = new Army();
+
+        armyWitches.addUnits(Witch::new, 1);
+        armyVampires.addUnits(Vampire::new, 2);
+
+        assert !Battle.fight(armyWitches, armyVampires);
+    }
+
+    @Test
+    @DisplayName("4: Witch Test")
+    void testWitch4() {
+        var army1 = new Army();
+        var army2 = new Army();
+
+        army1.addUnits(Warrior::new, 2);
+        army1.addUnits(Witch::new, 1);
+
+        army2.addUnits(Vampire::new, 1);
+        army2.addUnits(Lancer::new, 2);
+
+        assert !Battle.straightFight(army1, army2);
+    }
+
+    @Test
+    @DisplayName("5: Witch Test")
+    void testWitch5() {
+        var army1 = new Army();
+        var army2 = new Army();
+
+        army1.addUnits(Witch::new, 1);
+        army1.addUnits(Healer::new, 4);
+
+        army2.addUnits(Warrior::new, 3);
+        army2.addUnits(Lancer::new, 2);
+
+        assert Battle.fight(army1, army2);
+    }
+
+    @Test
+    @DisplayName("6: Witch Test")
+    void testWitch6() {
+        var army1 = new Army();
+        var army2 = new Army();
+
+        army1.addUnits(Witch::new, 1);
+        army1.addUnits(Healer::new, 4);
+
+        army2.addUnits(Warrior::new, 3);
+        army2.addUnits(Lancer::new, 2);
+
+        army1.equipWarriorAtPosition(0, Weapon.getMagicSleeves());
+
+        assert !Battle.fight(army1, army2);
+    }
+
+    @Test
+    @DisplayName("7: Witch Test")
+    void testWitch7() {
+        var army1 = new Army();
+        var army2 = new Army();
+
+        army1.addUnits(Witch::new, 1);
+        army1.addUnits(Healer::new, 2);
+
+        army2.addUnits(Lancer::new, 1);
+        army2.addUnits(Warrior::new, 3);
+
+        army1.equipWarriorAtPosition(0, Weapon.getMagicSleeves());
+
+        assert Battle.fight(army1, army2);
+    }
+
+    @Test
+    @DisplayName("8: Witch Test")
+    void testWitch8() {
+        var army1 = new Army();
+        var army2 = new Army();
+
+        army1.addUnits(Warrior::new, 2);
+        army1.addUnits(Healer::new, 2);
+
+        army2.addUnits(Witch::new, 1);
+        army2.addUnits(Warrior::new, 3);
+
+        army1.equipWarriorAtPosition(0, Weapon.getMagicSleeves());
+
+        assert !Battle.fight(army1, army2);
+    }
+
+    @Test
+    @DisplayName("9: Witch Test")
+    void testWitch9() {
+        var army1 = new Army();
+        var army2 = new Army();
+
+        army1.addUnits(Witch::new, 1);
+        army1.addUnits(Warrior::new, 2);
+
+        army2.addUnits(Witch::new, 1);
+        army2.addUnits(Lancer::new, 2);
+
+        army2.equipWarriorAtPosition(0, Weapon.getMagicSleeves());
+
+        assert !Battle.fight(army1, army2);
+    }
+
+    @Test
+    @DisplayName("10: Witch Test")
+    void testWitch10() {
+        var army1 = new Army();
+        var army2 = new Army();
+
+        army1.addUnits(Lancer::new, 1);
+        army1.addUnits(Vampire::new, 2);
+
+        army2.addUnits(Witch::new, 2);
+
+        army1.equipWarriorAtPosition(0, Weapon.getMagicSleeves());
+
+        assert Battle.fight(army1, army2);
+    }
+}
+
+class FanaticTest {
+    @Test
+    @DisplayName("1: Fanatic Test")
+    void testFanatic1() {
+        var fanatic = new Fanatic();
+        var warrior = new Warrior();
+
+        assert !Battle.fight(fanatic, warrior);
+    }
+
+    @Test
+    @DisplayName("2: Fanatic Test")
+    void testFanatic2() {
+        var witch = new Witch();
+        var fanatic = new Fanatic();
+
+        assert Battle.fight(witch, fanatic);
     }
 }

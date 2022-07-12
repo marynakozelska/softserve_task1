@@ -11,6 +11,7 @@ public class Weapon {
     private int vampirism = 0;
     private int defense = 0;
     private int healPower = 0;
+    private int enchantmentIterator = 0;
 
     private static WeaponBuilder swordBuilder = builder()
             .health(5)
@@ -38,6 +39,10 @@ public class Weapon {
             .attack(3)
             .healPower(3);
 
+    private static WeaponBuilder magicSleeves = builder()
+            .attack(3)
+            .enchantmentIterator(1);
+
     public static Weapon getSword() {
         return swordBuilder.build();
     }
@@ -56,6 +61,10 @@ public class Weapon {
 
     public static Weapon getMagicWand() {
         return magicWandBuilder.build();
+    }
+
+    public static Weapon getMagicSleeves() {
+        return magicSleeves.build();
     }
 
 }

@@ -20,9 +20,12 @@ public class Army implements Iterable<Warrior> {
         }
     }
 
-//    public void addUnits(Warrior inputWarrior) {
-//        troops.add(inputWarrior);
-//    }
+    public void addUnits(Warrior inputWarrior) {
+        if (!troops.isEmpty()) {
+            troops.get(troops.size() - 1).setWarriorBehind(inputWarrior);
+        }
+        troops.add(inputWarrior);
+    }
 
     public void addToColumn(Warrior warrior) {
         if (!troops.isEmpty()) {
@@ -33,6 +36,10 @@ public class Army implements Iterable<Warrior> {
 
     public void addToLine(Warrior warrior) {     //  with no one behind
         warrior.setWarriorBehind(null);
+        if (troops.size() != 0) {
+            troops.get(troops.size() - 1).setWarriorOnTheRight(warrior);
+            warrior.setWarriorOnTheLeft(troops.get(troops.size() - 1));
+        }
         troops.add(warrior);
     }
 
@@ -107,21 +114,22 @@ public class Army implements Iterable<Warrior> {
 
     public void moveUnits() {
         if (hasWarlord) {
-            LinkedList<Warrior> temporaryTroops = new LinkedList<>();
+            Army temporaryTroops = new Army();
 
             boolean firstSoliderStands = setFirstUnit(temporaryTroops);
             Warrior temporaryWarlord = null;
 
 //            find warlord
-            temporaryWarlord = findWarlord(temporaryTroops);
+            temporaryWarlord = findWarlord();
+            temporaryWarlord.setWarriorBehind(null);
             if (!firstSoliderStands) {
-                temporaryTroops.add(temporaryWarlord);
+                temporaryTroops.addUnits(temporaryWarlord);
             }
 
 //            adding healers
             for (int i = 0; i < troops.size(); i++) {
                 if (troops.get(i) instanceof Healer) {
-                    temporaryTroops.add(troops.get(i));
+                    temporaryTroops.addUnits(troops.get(i));
                     troops.remove(i);   // moves list
                     i--;
                 }
@@ -129,27 +137,46 @@ public class Army implements Iterable<Warrior> {
 //            adding more lancers
             for (int i = 0; i < troops.size() && firstSoliderStands; i++) {
                 if (troops.get(i) instanceof Lancer) {
-                    temporaryTroops.add(troops.get(i));
+                    temporaryTroops.addUnits(troops.get(i));
                     troops.remove(i);
                     i--;
                 }
             }
 
 //            adding everyone else
-            temporaryTroops.addAll(troops);
+            for (int i = 0; i < troops.size(); i++) {
+                temporaryTroops.addUnits(troops.get(i));
+                troops.remove(i);   // moves list
+                i--;
+            }
             troops.clear();
-            if (firstSoliderStands) temporaryTroops.add(temporaryWarlord);
 
-            troops.addAll(temporaryTroops);
+            if (firstSoliderStands) {
+                temporaryTroops.addUnits(temporaryWarlord);
+            } else {
+                temporaryTroops.getWarrior(temporaryTroops.size() - 1).setWarriorBehind(null);
+            }
+
+            troops.addAll(temporaryTroops.troops);
         }
+
+        printRearranged(troops);
     }
 
-    private boolean setFirstUnit(LinkedList<Warrior> temporaryArmy) {
+    private void printRearranged(LinkedList<Warrior> troops) {
+        System.out.println("\n__________________________________________________");
+        for (Warrior troop : troops) {
+            System.out.println(troop + " Current health: " + troop.getHealth());
+        }
+        System.out.println("__________________________________________________\n");
+    }
+
+    private boolean setFirstUnit(Army temporaryArmy) {
         boolean flag = false;
 //            setting first lancer
         for (int i = 0; i < troops.size(); i++) {
             if (troops.get(i) instanceof Lancer) {
-                temporaryArmy.add(troops.get(i));
+                temporaryArmy.addUnits(troops.get(i));
                 troops.remove(i);
                 flag = true;
                 break;
@@ -159,7 +186,7 @@ public class Army implements Iterable<Warrior> {
         if (temporaryArmy.isEmpty()) {
             for (int i = 0; i < troops.size(); i++) {
                 if (!(troops.get(i) instanceof Healer) && !(troops.get(i) instanceof Warlord)) {
-                    temporaryArmy.add(troops.get(i));
+                    temporaryArmy.addUnits(troops.get(i));
                     troops.remove(i);
                     flag = true;
                     break;
@@ -178,7 +205,7 @@ public class Army implements Iterable<Warrior> {
         return troops.size();
     }
 
-    private Warlord findWarlord(LinkedList<Warrior> temporaryArmy) {
+    private Warlord findWarlord() {
         Warlord warlord = null;
         for (int i = 0; i < troops.size(); i++) {
             if (troops.get(i) instanceof Warlord) {

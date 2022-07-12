@@ -17,7 +17,8 @@ public class Knight extends Warrior implements CanAttack {
 
     @Override
     public void equipWeapon(Weapon weapon) {
-        setHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setMaxHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setHealth(getMaxHealth());
         this.gainedAttack += weapon.getAttack();
     }
 }

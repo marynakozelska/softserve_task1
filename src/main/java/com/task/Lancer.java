@@ -14,14 +14,15 @@ public class Lancer extends Warrior implements CanAttack {
         super.hits(enemy);
         int damageForFirstEnemy = healthBefore - enemy.getHealth();
         Warrior warriorBehind = enemy.getWarriorBehind();
-        if (warriorBehind != null) {
+        if (warriorBehind != null && warriorBehind != this) {
             warriorBehind.setHealth(Math.max(0, warriorBehind.getHealth() - damageForFirstEnemy * LANCER_POWER / 100));
         }
     }
 
     @Override
     public void equipWeapon(Weapon weapon) {
-        setHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setMaxHealth(Math.max(0, getHealth() + weapon.getHealth()));
+        setHealth(getMaxHealth());
         this.gainedAttack += weapon.getAttack();
     }
 }

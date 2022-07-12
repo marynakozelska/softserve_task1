@@ -1,11 +1,13 @@
 package com.task;
 
-public class Warrior implements CanAttack {
+public class Warrior extends HealingProcessor implements CanAttack {
     private static final int ATTACK_DEFAULT = 5;
     protected int gainedAttack = ATTACK_DEFAULT;
     private int gainedHealth;
     private int maxHealth;
     private Warrior warriorBehind;
+    private Warrior warriorOnTheRight = null;
+    private Warrior warriorOnTheLeft = null;
 
     public Warrior() {
         this(50);
@@ -33,6 +35,14 @@ public class Warrior implements CanAttack {
         return maxHealth;
     }
 
+    public Warrior getWarriorOnTheRight() {
+        return warriorOnTheRight;
+    }
+
+    public Warrior getWarriorOnTheLeft() {
+        return warriorOnTheLeft;
+    }
+
     public void setAttack(int gainedAttack) {
         this.gainedAttack = gainedAttack;
     }
@@ -53,16 +63,21 @@ public class Warrior implements CanAttack {
         this.warriorBehind = warriorBehind;
     }
 
-    public void hits(Warrior enemy) {
-        enemy.getHitBy(this);
+    public void setWarriorOnTheRight(Warrior warriorOnTheRight) {
+        this.warriorOnTheRight = warriorOnTheRight;
     }
 
-    public void getHitBy(Warrior enemy) {
-        this.gainedHealth = Math.max(0, this.gainedHealth - enemy.getAttack());
-        if (warriorBehind instanceof Healer && this.gainedHealth != 0) {
-            Healer healer = (Healer) warriorBehind;
-            healer.heal(this);
-        }
+    public void setWarriorOnTheLeft(Warrior warriorOnTheLeft) {
+        this.warriorOnTheLeft = warriorOnTheLeft;
+    }
+
+    public void hits(Warrior enemy) {
+        enemy.getHitBy(this);
+        this.process(this, null);
+    }
+
+    public void getHitBy(CanAttack enemy) {
+        setHealth(Math.max(0, this.gainedHealth - enemy.getAttack()));
     }
 
     public Warrior getWarriorBehind() {
@@ -74,8 +89,8 @@ public class Warrior implements CanAttack {
     }
 
     public void equipWeapon(Weapon weapon) {
-        this.gainedHealth = Math.max(0, this.gainedHealth + weapon.getHealth());
-        maxHealth = getHealth();
+        setMaxHealth(Math.max(0, this.gainedHealth + weapon.getHealth()));
+        this.gainedHealth = getMaxHealth();
         this.gainedAttack += weapon.getAttack();
     }
 }
